@@ -1,0 +1,172 @@
+let CODE = {
+    FIRST: {
+        A: 1,
+        B: 2,
+        C: 3
+    }
+}
+let NAME = {
+    FIRST: {
+        [CODE.FIRST.A]: 'A',
+        [CODE.FIRST.B]: 'B',
+        [CODE.FIRST.C]: 'C'
+    }
+}
+let MapCreator = require('./index.js').default
+
+class CodeFn extends MapCreator {
+    constructor(code = {}, name = {}) {
+        super()
+        this.code = code
+        this.name = name
+    }
+
+    transfer() {
+        for (let key in this.code) {
+            for (let subKey in this.code[key]) {
+                this.add(
+                    `${key}.${subKey}`,
+                    this.code[key][subKey],
+                    this.name[key][this.code[key][subKey]],
+                    ''
+                )
+            }
+        }
+    }
+
+    setCodeAndName() {
+        let values = {},
+            names = {},
+            data = this.codeMap
+        for (let key in data) {
+            values[key] = {}
+            names[key] = {}
+            for (let subKey in data[key]) {
+                values[key][subKey] = data[key][subKey].value
+                names[key][values[key][subKey]] = data[key][subKey].name
+            }
+        }
+        this.code = values
+        this.name = names
+    }
+}
+
+
+
+let _map = new CodeFn(CODE, NAME)
+
+_map.transfer()
+_map.add('FIRST.D', 4, 'D', 'aliasD')
+_map.add('SECOND.A', 1, 'A', 'aliasA')
+_map.add('SECOND.B', 2, 'B', 'aliasB')
+_map.add('SECOND.C', 3, 'C', 'aliasC')
+_map.setCodeAndName()
+
+
+function CodeProxy (code, keyPath = '') {
+    return new Proxy(code, {
+        get(target, key) {
+            // console.log('target:', key, JSON.stringify(target))
+            // if (typeof key !== 'string') {
+            //     return 111
+            // }
+            console.log(key, key in target)
+
+            // if (key === 'B') {
+            //     return target[key].value
+            // }
+
+            if (key in target) {
+                console.log(333, new Proxy(target[key], {
+                    get(a, b) {
+                        console.log(111, b)
+                        return 111
+                    }
+                }))
+                if (key === 'B') {
+                    console.log(222)
+                    return target[key].value
+                } else {
+                    // let _target = JSON.parse(JSON.stringify(target[key]))
+                    
+                    return CodeProxy(target[key])
+                }
+            } else {
+                console.log(1111)
+                return 111
+                // return CodeProxy(target[key])
+            }
+
+            // console.log(target[key])
+
+            // new Proxy(target[key], {
+            //     get(childTarget, childKey) {
+            //         console.log('childKey:', childKey, childTarget)
+            //         return 111
+            //     }
+            // })
+
+            // console.log(111, CodeProxy(target[key]))
+
+            // return CodeProxy(target[key])
+
+            // if (target.hasOwnProperty(key) && key !== 'B') {
+            //     // console.log(111, target)
+            //     return CodeProxy(target[key])
+            // } else {
+            //     return target.B.value
+            // }
+
+            // if (key === 'FIRST') {
+            //     return CodeProxy(target[key])
+            // }
+            
+            // if (key === 'B') {
+            //     return target.B.value
+            // }
+            
+            // if (target.hasOwnProperty(key) && key !== 'value') {
+            //     console.log(2221, target[key], key)
+            //     return CodeProxy(target[key])
+            //     // keyPath = keyPath + (keyPath ? '.' : '') + key || ''
+            //     // console.log(222, key, target[key])
+            //     // if (Object.prototype.toString.call(target[key]) === '[object Object]') {
+            //     //     console.log(2221, target[key], key)
+            //     //     return CodeProxy(target[key])
+            //     // }
+            //     // console.log(11111, _map.getValue(keyPath.replace('.value', '')))
+            //     // return _map.getValue(keyPath.replace('.value', ''))
+            // }
+
+            // if (target.hasOwnProperty('value')) {
+            //     console.log(222, target.value)
+            //     return target.value
+            // }
+            // return target[key]
+        },
+        set(target, key, value) {
+            console.error(
+                target.hasOwnProperty(key)
+                    ? '常量定义，不允许修改'
+                    : '不允许自定义新增常量'
+            )
+            return target
+        }
+    })
+    // return _proxy
+}
+
+let codeProxy = CodeProxy(_map.codeMap)
+let nameProxy = CodeProxy(_map.name)
+// codeProxy.FIRST.A = 123
+// console.log('codeMap:', _map.codeMap)
+console.log('codeProxy:', codeProxy.FIRST)
+// console.log('nameProxy:', nameProxy)
+// console.log('codeProxy:', codeProxy.FIRST.q)
+
+// console.log('code:', _map.code.FIRST)
+// console.log('name:', _map.name)
+// console.log('codeMap:', _map.codeMap)
+// console.log('FIRST.A value:', _map.get('FIRST'))
+// console.log('FIRST.A value:', _map.getValue('FIRST.A'))
+// console.log('FIRST array:', _map.getArray('FIRST'))
