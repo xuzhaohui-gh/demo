@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="3.882" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2022-08-07T14:57:05" tests="0" file="cypress/integration/test/baidu.spec.js" failures="0" time="0">
+  </testsuite>
+  <testsuite name="我的第一个测试" timestamp="2022-08-07T14:57:05" tests="1" failures="0" time="3.882">
+    <testcase name="我的第一个测试 百度测试用例：" time="3.882" classname="百度测试用例：">
+    </testcase>
+  </testsuite>
+</testsuites>

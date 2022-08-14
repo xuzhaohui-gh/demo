@@ -1,0 +1,14 @@
+{
+  "viewportWidth": 1280,
+  "viewportHeight": 600,
+  "integrationFolder": "cypress/integration/test",
+  "testFiles": "**/*.js",
+  "chromeWebSecurity": false,
+  "reporter": "mochawesome",
+  "reporterOptions": {
+    "reportDir": "cypress/mochawesome-report",
+    "overwrite": false,
+    "html": false,
+    "json": true
+  }
+}
