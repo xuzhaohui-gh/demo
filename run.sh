@@ -1,1 +1,1 @@
-docker run -t -it -v $PWD:/test -w /test cypress3.8.3:latest
+rmdocker run -t -it -v $PWD:/test -w /test cypress3.8.3:latest
