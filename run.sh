@@ -1,10 +1,8 @@
-
 # 进入测试用例源码目录
 # cd workspacei
 
 # 删除上次生成的报告文件
-rm -rf cypress/results
-rm -rf cypress/videos
+rm -rf cypress/results cypress/videos merge-report.json mochawesome-report
 
 # 创建容器并执行测试用例
 docker run -it -v $PWD:/test -w /test cypress3.8.3:latest;
