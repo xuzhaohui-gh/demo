@@ -9,8 +9,8 @@ npx mochawesome-merge cypress/results/*.json > merge-report.json
 npx mochawesome-report-generator merge-report.json
 
 # 拷贝测试报告至jenkins流水线任务工作空间目录供查看报告
-cd ../../
-scp -r /root/workspace/mochawesome-report/ /var/lib/jenkins/workspace/自动化测试/
+#cd ../../
+#scp -r /root/workspace/mochawesome-report/ /var/lib/jenkins/workspace/自动化测试/
 
 # 必须，否则jenkins任务无法正常退出，会认为任务失败
 exit 0;
