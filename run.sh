@@ -5,7 +5,7 @@ cd /root/workspace
 rm -rf cypress/results cypress/videos merge-report.json mochawesome-report
 
 # 创建容器并执行测试用例
-docker run -it -v $PWD:/test -w /test cypress3.8.3:latest;
+docker run -it -v $PWD:/test -v /test/node_modules -w /test cypress3.8.3:latest;
 
 # 将测试报告合成一个html入口
 npx mochawesome-merge cypress/results/*.json > merge-report.json
