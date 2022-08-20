@@ -4,3 +4,6 @@ package-lock.json
 results
 screenshots
 videos
+
+mochawesome-report
+merge-report.json
